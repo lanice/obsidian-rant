@@ -1,21 +1,22 @@
 {
-  "name": "obsidian-extract-url",
+  "name": "obsidian-rant",
   "version": "0.1.0",
-  "description": "Extract url converting content into markdown",
+  "description": "Thin wrapper around the Rant language Rust crate",
   "main": "main.js",
   "scripts": {
-    "build": "wasm-pack build --target web && rollup --config rollup.config.js"
+    "compile": "wasm-pack build --target web && rollup --config rollup.config.js",
+    "build": "rollup --config rollup.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@open-wc/building-rollup": "^2.0.1",
     "@rollup/plugin-commonjs": "^15.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
+    "obsidian": "^0.12.17",
     "rollup": "^2.32.1",
-    "rollup-plugin-base64": "^1.0.1"
-  },
-  "dependencies": {
-    "minimist": "^1.2.5"
+    "rollup-plugin-base64": "^1.0.1",
+    "typescript": "^4.5.4"
   }
 }

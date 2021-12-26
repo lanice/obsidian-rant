@@ -1,8 +1,8 @@
 [package]
-name = "obsidian-rust-plugin"
+name = "obsidian-rantlang-plugin"
 version = "0.1.0"
-authors = ["Stephen Solka <solka@angel.co>"]
-edition = "2018"
+authors = ["lanice"]
+edition = "2021"
 
 [lib]
 crate-type = ["cdylib"]

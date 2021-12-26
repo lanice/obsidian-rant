@@ -1,8 +1,8 @@
 {
   "id": "obsidian-rant",
-  "name": "Rantlang",
+  "name": "Rant-Lang",
   "version": "0.1.0",
-  "description": "Thin wrapper around the Rust rantlang module",
+  "description": "Thin wrapper around the Rant language Rust crate",
   "author": "lanice",
   "authorUrl": "https://github.com/lanice",
   "isDesktopOnly": false
