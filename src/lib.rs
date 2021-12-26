@@ -1,5 +1,6 @@
 mod obsidian;
 use js_sys::JsString;
+use rant::Rant;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -30,9 +31,7 @@ impl ExampleCommand {
         self.name = JsString::from(name)
     }
 
-    pub fn callback(&self) {
-        obsidian::Notice::new("hello from rust");
-    }
+    pub fn callback(&self) {}
 }
 
 #[wasm_bindgen]
@@ -42,4 +41,18 @@ pub fn onload(plugin: &obsidian::Plugin) {
         name: JsString::from("Example"),
     };
     plugin.addCommand(JsValue::from(cmd))
+}
+
+#[wasm_bindgen]
+pub fn rant(input: &str, seed: u32) -> String {
+    // Create a default Rant context
+    let mut rant = Rant::with_seed(seed as u64);
+
+    // Compile a simple program
+    let program = rant.compile_quiet(input).unwrap();
+
+    // Run the program and print the output
+    let output = rant.run(&program).unwrap();
+
+    output.to_string()
 }

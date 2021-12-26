@@ -1,9 +1,9 @@
 {
-  "id": "rust-plugin",
-  "name": "Rust Plugin",
+  "id": "obsidian-rant",
+  "name": "Rantlang",
   "version": "0.1.0",
-  "description": "Prototype plugin written in rust",
-  "author": "Stephen Solka",
-  "authorUrl": "https://github.com/trashhalo",
+  "description": "Thin wrapper around the Rust rantlang module",
+  "author": "lanice",
+  "authorUrl": "https://github.com/lanice",
   "isDesktopOnly": false
 }
