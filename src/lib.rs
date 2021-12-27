@@ -1,58 +1,33 @@
-mod obsidian;
-use js_sys::JsString;
-use rant::Rant;
+use std::fmt;
+
+use rant::{compiler::CompilerErrorKind, runtime::RuntimeError, Rant, RantValue};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-pub struct ExampleCommand {
-    id: JsString,
-    name: JsString,
+pub fn rant(input: &str, seed: u32) -> Result<String, JsValue> {
+    match _rant(input, seed) {
+        Ok(output) => Ok(output.to_string()),
+        Err(err) => Err(JsValue::from(err.to_string())),
+    }
 }
 
-#[wasm_bindgen]
-impl ExampleCommand {
-    #[wasm_bindgen(getter)]
-    pub fn id(&self) -> JsString {
-        self.id.clone()
-    }
-
-    #[wasm_bindgen(setter)]
-    pub fn set_id(&mut self, id: &str) {
-        self.id = JsString::from(id)
-    }
-
-    #[wasm_bindgen(getter)]
-    pub fn name(&self) -> JsString {
-        self.name.clone()
-    }
-
-    #[wasm_bindgen(setter)]
-    pub fn set_name(&mut self, name: &str) {
-        self.name = JsString::from(name)
-    }
-
-    pub fn callback(&self) {}
-}
-
-#[wasm_bindgen]
-pub fn onload(plugin: &obsidian::Plugin) {
-    let cmd = ExampleCommand {
-        id: JsString::from("example"),
-        name: JsString::from("Example"),
-    };
-    plugin.addCommand(JsValue::from(cmd))
-}
-
-#[wasm_bindgen]
-pub fn rant(input: &str, seed: u32) -> String {
-    // Create a default Rant context
+fn _rant(input: &str, seed: u32) -> Result<RantValue, RantError> {
     let mut rant = Rant::with_seed(seed as u64);
+    let program = rant.compile_quiet(input).map_err(RantError::Compiler)?;
+    rant.run(&program).map_err(RantError::Runtime)
+}
 
-    // Compile a simple program
-    let program = rant.compile_quiet(input).unwrap();
+#[derive(Debug)]
+enum RantError {
+    Compiler(CompilerErrorKind),
+    Runtime(RuntimeError),
+}
 
-    // Run the program and print the output
-    let output = rant.run(&program).unwrap();
-
-    output.to_string()
+impl fmt::Display for RantError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            RantError::Compiler(ref err) => write!(f, "Rant Compile error: {}", err),
+            RantError::Runtime(ref err) => write!(f, "Rant Runtime error: {}", err),
+        }
+    }
 }

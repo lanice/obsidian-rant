@@ -140,7 +140,6 @@ dependencies = [
 name = "obsidian-rantlang-plugin"
 version = "0.1.0"
 dependencies = [
- "js-sys",
  "rant",
  "wasm-bindgen",
 ]

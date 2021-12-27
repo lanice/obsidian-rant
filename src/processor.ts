@@ -6,8 +6,12 @@ export default class RantProcessor {
   constructor(public input: string, public containerEl: HTMLDivElement) {}
 
   processInput(seed: number) {
-    // const seed = Math.random() * Number.MAX_SAFE_INTEGER;
-    this.result = rant(this.input, seed);
+    try {
+      this.result = rant(this.input, seed);
+    } catch (error) {
+      this.result = "ERROR processing Rant block (see console for details)";
+      console.error(error);
+    }
   }
 
   renderResult() {
