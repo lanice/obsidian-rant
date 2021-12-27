@@ -140,6 +140,7 @@ dependencies = [
 name = "obsidian-rantlang-plugin"
 version = "0.1.0"
 dependencies = [
+ "getrandom",
  "rant",
  "wasm-bindgen",
 ]
@@ -236,11 +237,11 @@ dependencies = [
 [[package]]
 name = "rant"
 version = "4.0.0-alpha.23"
+source = "git+https://github.com/lanice/rant#d33c9c47baa77eac18753f2568bae9a806242d45"
 dependencies = [
  "cast",
  "cervine",
  "fnv",
- "getrandom",
  "line-col",
  "logos",
  "once_cell",
