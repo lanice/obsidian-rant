@@ -2,8 +2,9 @@
   "id": "obsidian-rant",
   "name": "Rant-Lang",
   "version": "0.1.0",
+  "minAppVersion": "0.12.15",
   "description": "Thin wrapper around the Rant language Rust crate",
-  "author": "lanice",
+  "author": "Leander Neiß",
   "authorUrl": "https://github.com/lanice",
   "isDesktopOnly": false
 }
