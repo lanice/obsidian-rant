@@ -1,6 +1,7 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import { base64 } from 'rollup-plugin-base64';
+import typescript2 from "rollup-plugin-typescript2";
 
 const banner =
   `/*
@@ -10,7 +11,7 @@ if you want to view the source visit the plugins github repository
 `;
 
 export default {
-  input: 'index.ts',
+  input: 'src/main.ts',
   output: {
     file: 'main.js',
     sourcemap: 'inline',
@@ -20,6 +21,7 @@ export default {
   },
   external: ['obsidian'],
   plugins: [
+    typescript2(),
     nodeResolve({ browser: true }),
     commonjs(),
     base64({ include: "**/*.wasm" })
