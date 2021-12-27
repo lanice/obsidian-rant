@@ -59,6 +59,7 @@ export default class RantLangPlugin extends Plugin {
     this.addCommand({
       id: "rerant",
       name: "Re-rant with random seed (active file)",
+      hotkeys: [{ key: "r", modifiers: ["Mod"] }],
       checkCallback: (checking) => {
         const view = this.app.workspace.getActiveViewOfType(MarkdownView);
         if (
