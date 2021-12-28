@@ -9,64 +9,36 @@ import {
 import rustPlugin from "../pkg/obsidian_rantlang_plugin_bg.wasm";
 import { around } from "monkey-around";
 import init from "../pkg/obsidian_rantlang_plugin.js";
-import RantProcessor, { InlineRantProcessor } from "./processor";
+import {
+  CodeblockRantProcessor,
+  InlineRantProcessor,
+  BaseRantProcessor,
+} from "./processor";
 import { randomSeed } from "./utils";
 
-type RantProcessorType = RantProcessor | InlineRantProcessor;
-
 export default class RantLangPlugin extends Plugin {
-  fileMap: Map<TFile, RantProcessorType[]> = new Map();
+  fileMap: Map<TFile, BaseRantProcessor[]> = new Map();
 
   async onload() {
+    // Load WebAssembly Rust plugin to have access to the Rust Rant crate.
     const buffer = Uint8Array.from(atob(rustPlugin), (c) => c.charCodeAt(0));
     await init(Promise.resolve(buffer));
 
+    // Register Rant codeblocks.
     this.registerMarkdownCodeBlockProcessor(
       "rant",
       (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
         const file = this.app.vault.getAbstractFileByPath(ctx.sourcePath);
         if (!file || !(file instanceof TFile)) return;
 
-        const processor = new RantProcessor(
-          source,
-          el.createDiv({ cls: "rant" })
-        );
+        const processor = new CodeblockRantProcessor(source, el);
         processor.rant(randomSeed());
 
-        /* File-based tracking of registered processors inspired by javalent's excellent dice roller plugin: https://github.com/valentine195/obsidian-dice-roller */
-
-        if (!this.fileMap.has(file)) {
-          this.fileMap.set(file, []);
-        }
-        this.fileMap.set(file, [...this.fileMap.get(file), processor]);
-
-        const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-        if (
-          view &&
-          this.fileMap.has(file) &&
-          this.fileMap.get(file).length === 1
-        ) {
-          const self = this;
-
-          let unregisterOnUnloadFile = around(view, {
-            onUnloadFile: function (next) {
-              return async function (unloaded: TFile) {
-                if (unloaded == file) {
-                  self.fileMap.delete(file);
-                  unregisterOnUnloadFile();
-                }
-
-                return await next.call(this, unloaded);
-              };
-            },
-          });
-
-          view.register(unregisterOnUnloadFile);
-          view.register(() => this.fileMap.delete(file));
-        }
+        this.registerRantProcessorForRerant(processor, file);
       }
     );
 
+    // Register inline Rant blocks.
     this.registerMarkdownPostProcessor(
       (el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
         const file = this.app.vault.getAbstractFileByPath(ctx.sourcePath);
@@ -84,37 +56,7 @@ export default class RantLangPlugin extends Plugin {
             ctx.addChild(processor);
             processor.rant(randomSeed());
 
-            /* File-based tracking of registered processors inspired by javalent's excellent dice roller plugin: https://github.com/valentine195/obsidian-dice-roller */
-
-            if (!this.fileMap.has(file)) {
-              this.fileMap.set(file, []);
-            }
-            this.fileMap.set(file, [...this.fileMap.get(file), processor]);
-
-            const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-            if (
-              view &&
-              this.fileMap.has(file) &&
-              this.fileMap.get(file).length === 1
-            ) {
-              const self = this;
-
-              let unregisterOnUnloadFile = around(view, {
-                onUnloadFile: function (next) {
-                  return async function (unloaded: TFile) {
-                    if (unloaded == file) {
-                      self.fileMap.delete(file);
-                      unregisterOnUnloadFile();
-                    }
-
-                    return await next.call(this, unloaded);
-                  };
-                },
-              });
-
-              view.register(unregisterOnUnloadFile);
-              view.register(() => this.fileMap.delete(file));
-            }
+            this.registerRantProcessorForRerant(processor, file);
           }
         }
       }
@@ -144,5 +86,35 @@ export default class RantLangPlugin extends Plugin {
         }
       },
     });
+  }
+
+  registerRantProcessorForRerant(processor: BaseRantProcessor, file: TFile) {
+    // File-based tracking of registered processors inspired by javalent's excellent dice roller plugin: https://github.com/valentine195/obsidian-dice-roller
+
+    if (!this.fileMap.has(file)) {
+      this.fileMap.set(file, []);
+    }
+    this.fileMap.set(file, [...this.fileMap.get(file), processor]);
+
+    const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+    if (view && this.fileMap.has(file) && this.fileMap.get(file).length === 1) {
+      const self = this;
+
+      const unregisterOnUnloadFile = around(view, {
+        onUnloadFile: function (next) {
+          return async function (unloaded: TFile) {
+            if (unloaded == file) {
+              self.fileMap.delete(file);
+              unregisterOnUnloadFile();
+            }
+
+            return await next.call(this, unloaded);
+          };
+        },
+      });
+
+      view.register(unregisterOnUnloadFile);
+      view.register(() => this.fileMap.delete(file));
+    }
   }
 }

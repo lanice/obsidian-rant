@@ -1,10 +1,15 @@
 import { MarkdownRenderChild } from "obsidian";
 import { rant } from "../pkg/obsidian_rantlang_plugin.js";
 
-export default class RantProcessor {
+export abstract class BaseRantProcessor extends MarkdownRenderChild {
   result: string = "";
+  target: HTMLElement;
 
-  constructor(public input: string, public containerEl: HTMLDivElement) {}
+  constructor(public input: string, public container: HTMLElement) {
+    super(container);
+  }
+
+  abstract renderResult(): void;
 
   processInput(seed: number) {
     try {
@@ -13,6 +18,18 @@ export default class RantProcessor {
       this.result = "ERROR processing Rant block (see console for details)";
       console.error(error);
     }
+  }
+
+  rant(seed: number) {
+    this.processInput(seed);
+    this.renderResult();
+  }
+}
+
+export class CodeblockRantProcessor extends BaseRantProcessor {
+  constructor(input: string, container: HTMLElement) {
+    super(input, container);
+    this.target = container.createEl("p", { cls: "rant" });
   }
 
   renderResult() {
@@ -23,34 +40,15 @@ export default class RantProcessor {
       });
     });
 
-    this.containerEl.replaceChildren(node);
-  }
-
-  rant(seed: number) {
-    this.processInput(seed);
-    this.renderResult();
+    this.target.replaceChildren(node);
   }
 }
 
 /** Processes inline Rant blocks. */
-export class InlineRantProcessor extends MarkdownRenderChild {
-  result: string = "";
-
-  constructor(
-    public input: string,
-    public container: HTMLElement,
-    public target: HTMLElement
-  ) {
-    super(container);
-  }
-
-  processInput(seed: number) {
-    try {
-      this.result = rant(this.input, seed);
-    } catch (error) {
-      this.result = "ERROR processing Rant block (see console for details)";
-      console.error(error);
-    }
+export class InlineRantProcessor extends BaseRantProcessor {
+  constructor(input: string, container: HTMLElement, target: HTMLElement) {
+    super(input, container);
+    this.target = target;
   }
 
   renderResult() {
@@ -58,10 +56,5 @@ export class InlineRantProcessor extends MarkdownRenderChild {
     temp.appendText(this.result);
     this.target.replaceWith(temp);
     this.target = temp;
-  }
-
-  rant(seed: number) {
-    this.processInput(seed);
-    this.renderResult();
   }
 }
