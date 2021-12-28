@@ -1,3 +1,12 @@
+## [0.2.4](https://github.com-personal/lanice/obsidian-rant/compare/0.2.3...0.2.4) (2021-12-28)
+
+
+### Features
+
+* add setting to disable/enable rant block styling ([164bf68](https://github.com-personal/lanice/obsidian-rant/commit/164bf6841b7357e0d6a14d67509e0ef9713b5112))
+
+
+
 ## [0.2.3](https://github.com-personal/lanice/obsidian-rant/compare/0.2.2...0.2.3) (2021-12-28)
 
 
