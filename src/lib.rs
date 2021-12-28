@@ -31,3 +31,32 @@ impl fmt::Display for RantError {
         }
     }
 }
+
+#[cfg(test)]
+pub mod tests {
+    use super::_rant;
+
+    #[test]
+    fn empty() {
+        let input = r#""#;
+        assert_eq!(_rant(input, 0).unwrap().to_string(), "");
+    }
+
+    #[test]
+    fn hint_old_syntax() {
+        let input = r#"Your lucky number is '[rand:1;100]."#;
+        assert_eq!(
+            _rant(input, 0).unwrap().to_string(),
+            "Your lucky number is 33."
+        );
+    }
+
+    #[test]
+    fn hint_new_syntax() {
+        let input = r#"Your lucky number is `[rand:1;100]."#;
+        assert_eq!(
+            _rant(input, 0).unwrap().to_string(),
+            "Your lucky number is `33."
+        );
+    }
+}
