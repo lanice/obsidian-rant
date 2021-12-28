@@ -1,0 +1,11 @@
+.rant {
+    border: 1px solid var(--background-modifier-border);
+}
+
+.rant-block {
+    padding: 4px 8px;
+}
+
+.rant-inline {
+    padding: 0px 4px;
+}

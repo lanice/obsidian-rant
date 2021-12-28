@@ -15,8 +15,18 @@ import {
   BaseRantProcessor,
 } from "./processor";
 import { randomSeed } from "./utils";
+import SettingTab from "./settings";
+
+interface RantLangSettings {
+  enableStyling: boolean;
+}
+
+const DEFAULT_SETTINGS: RantLangSettings = {
+  enableStyling: true,
+};
 
 export default class RantLangPlugin extends Plugin {
+  settings: RantLangSettings;
   fileMap: Map<TFile, BaseRantProcessor[]> = new Map();
 
   async onload() {
@@ -24,23 +34,32 @@ export default class RantLangPlugin extends Plugin {
     const buffer = Uint8Array.from(atob(rustPlugin), (c) => c.charCodeAt(0));
     await init(Promise.resolve(buffer));
 
+    // Settings initialization
+    this.settings = Object.assign(DEFAULT_SETTINGS, await this.loadData());
+    this.addSettingTab(new SettingTab(this.app, this));
+
     // Register Rant codeblocks.
     this.registerMarkdownCodeBlockProcessor(
       "rant",
-      (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
+      async (
+        source: string,
+        el: HTMLElement,
+        ctx: MarkdownPostProcessorContext
+      ) => {
         const file = this.app.vault.getAbstractFileByPath(ctx.sourcePath);
         if (!file || !(file instanceof TFile)) return;
 
+        const enableStyling = this.settings.enableStyling;
         const processor = new CodeblockRantProcessor(source, el);
-        processor.rant(randomSeed());
+        processor.rant(randomSeed(), enableStyling);
 
-        this.registerRantProcessorForRerant(processor, file);
+        await this.registerRantProcessorForRerant(processor, file);
       }
     );
 
     // Register inline Rant blocks.
     this.registerMarkdownPostProcessor(
-      (el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
+      async (el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
         const file = this.app.vault.getAbstractFileByPath(ctx.sourcePath);
         if (!file || !(file instanceof TFile)) return;
 
@@ -52,11 +71,12 @@ export default class RantLangPlugin extends Plugin {
           if (text.startsWith(inlineRantQueryPrefix)) {
             const code = text.substring(inlineRantQueryPrefix.length).trim();
 
+            const enableStyling = this.settings.enableStyling;
             const processor = new InlineRantProcessor(code, el, codeblock);
             ctx.addChild(processor);
-            processor.rant(randomSeed());
+            processor.rant(randomSeed(), enableStyling);
 
-            this.registerRantProcessorForRerant(processor, file);
+            await this.registerRantProcessorForRerant(processor, file);
           }
         }
       }
@@ -74,10 +94,11 @@ export default class RantLangPlugin extends Plugin {
           this.fileMap.has(view.file)
         ) {
           if (!checking) {
+            const enableStyling = this.settings.enableStyling;
             const processors = this.fileMap.get(view.file);
 
             processors.forEach((processor) => {
-              processor.rant(randomSeed());
+              processor.rant(randomSeed(), enableStyling);
             });
 
             new Notice("Re-processed Rant blocks");
@@ -88,7 +109,15 @@ export default class RantLangPlugin extends Plugin {
     });
   }
 
-  registerRantProcessorForRerant(processor: BaseRantProcessor, file: TFile) {
+  async updateSettings(settings: Partial<RantLangSettings>) {
+    Object.assign(this.settings, settings);
+    await this.saveData(this.settings);
+  }
+
+  async registerRantProcessorForRerant(
+    processor: BaseRantProcessor,
+    file: TFile
+  ) {
     // File-based tracking of registered processors inspired by javalent's excellent dice roller plugin: https://github.com/valentine195/obsidian-dice-roller
 
     if (!this.fileMap.has(file)) {
