@@ -1,3 +1,12 @@
+## [0.2.2](https://github.com-personal/lanice/obsidian-rant/compare/0.2.1...0.2.2) (2021-12-28)
+
+
+### Bug Fixes
+
+* remove empty styles.css and remove styles.css from release workflow ([f0f2504](https://github.com-personal/lanice/obsidian-rant/commit/f0f250437b777a760e6c7c63cba74752987417a4))
+
+
+
 ## [0.2.1](https://github.com-personal/lanice/obsidian-rant/compare/0.2.0...0.2.1) (2021-12-28)
 
 
