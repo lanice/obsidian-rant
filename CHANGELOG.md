@@ -1,3 +1,12 @@
+## [0.2.3](https://github.com-personal/lanice/obsidian-rant/compare/0.2.2...0.2.3) (2021-12-28)
+
+
+### Bug Fixes
+
+* fix release workflow ([af578d6](https://github.com-personal/lanice/obsidian-rant/commit/af578d62844265b470ebfecc787f4a2eada9d366))
+
+
+
 ## [0.2.2](https://github.com-personal/lanice/obsidian-rant/compare/0.2.1...0.2.2) (2021-12-28)
 
 
