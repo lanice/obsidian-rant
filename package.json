@@ -1,6 +1,6 @@
 {
   "name": "obsidian-rant",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Thin wrapper around the Rant language Rust crate",
   "main": "main.js",
   "scripts": {
