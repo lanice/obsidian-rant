@@ -1,6 +1,14 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
 import type RantLangPlugin from "./main";
 
+export interface RantLangSettings {
+  enableStyling: boolean;
+}
+
+export const DEFAULT_SETTINGS: RantLangSettings = {
+  enableStyling: true,
+};
+
 export default class SettingTab extends PluginSettingTab {
   additionalContainer: HTMLDivElement;
 

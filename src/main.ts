@@ -13,17 +13,10 @@ import {
   CodeblockRantProcessor,
   InlineRantProcessor,
   BaseRantProcessor,
+  Customization,
 } from "./processor";
 import { randomSeed } from "./utils";
-import SettingTab from "./settings";
-
-interface RantLangSettings {
-  enableStyling: boolean;
-}
-
-const DEFAULT_SETTINGS: RantLangSettings = {
-  enableStyling: true,
-};
+import SettingTab, { DEFAULT_SETTINGS, RantLangSettings } from "./settings";
 
 export default class RantLangPlugin extends Plugin {
   settings: RantLangSettings;
@@ -49,9 +42,20 @@ export default class RantLangPlugin extends Plugin {
         const file = this.app.vault.getAbstractFileByPath(ctx.sourcePath);
         if (!file || !(file instanceof TFile)) return;
 
-        const enableStyling = this.settings.enableStyling;
-        const processor = new CodeblockRantProcessor(source, el);
-        processor.rant(randomSeed(), enableStyling);
+        let customizations: Customization[] = [];
+        let lines = source.split("\n");
+        while (lines.length > 0 && ["bold", "italic"].contains(lines[0])) {
+          customizations.push(lines.shift() as Customization);
+        }
+        const input = lines.join("\n");
+
+        const processor = new CodeblockRantProcessor(
+          input,
+          el,
+          this.settings,
+          customizations
+        );
+        processor.rant(randomSeed());
 
         await this.registerRantProcessorForRerant(processor, file);
       }
@@ -71,10 +75,14 @@ export default class RantLangPlugin extends Plugin {
           if (text.startsWith(inlineRantQueryPrefix)) {
             const code = text.substring(inlineRantQueryPrefix.length).trim();
 
-            const enableStyling = this.settings.enableStyling;
-            const processor = new InlineRantProcessor(code, el, codeblock);
+            const processor = new InlineRantProcessor(
+              code,
+              el,
+              codeblock,
+              this.settings
+            );
             ctx.addChild(processor);
-            processor.rant(randomSeed(), enableStyling);
+            processor.rant(randomSeed());
 
             await this.registerRantProcessorForRerant(processor, file);
           }
@@ -94,11 +102,10 @@ export default class RantLangPlugin extends Plugin {
           this.fileMap.has(view.file)
         ) {
           if (!checking) {
-            const enableStyling = this.settings.enableStyling;
             const processors = this.fileMap.get(view.file);
 
             processors.forEach((processor) => {
-              processor.rant(randomSeed(), enableStyling);
+              processor.rant(randomSeed());
             });
 
             new Notice("Re-processed Rant blocks");

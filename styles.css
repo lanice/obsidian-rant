@@ -9,3 +9,11 @@
 .rant-inline {
     padding: 0px 4px;
 }
+
+.rant-bold {
+    font-weight: bold;
+}
+
+.rant-italic {
+    font-style: italic;
+}

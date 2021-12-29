@@ -1,12 +1,16 @@
 import { MarkdownRenderChild } from "obsidian";
 import { rant } from "../pkg/obsidian_rantlang_plugin.js";
+import { RantLangSettings } from "./settings.js";
 
 export abstract class BaseRantProcessor extends MarkdownRenderChild {
   result: string = "";
   target: HTMLElement;
-  enableStyling: boolean = false;
 
-  constructor(public input: string, public container: HTMLElement) {
+  constructor(
+    public input: string,
+    public container: HTMLElement,
+    public settings: RantLangSettings
+  ) {
     super(container);
   }
 
@@ -21,22 +25,30 @@ export abstract class BaseRantProcessor extends MarkdownRenderChild {
     }
   }
 
-  rant(seed: number, enableStyling: boolean) {
-    this.enableStyling = enableStyling;
+  rant(seed: number) {
     this.processInput(seed);
     this.renderResult();
   }
 }
 
+export type Customization = "bold" | "italic";
+
 export class CodeblockRantProcessor extends BaseRantProcessor {
-  constructor(input: string, container: HTMLElement) {
-    super(input, container);
-    const cls = this.enableStyling ? ["rant", "rant-block"] : "";
-    this.target = container.createEl("p", { cls });
+  customizations: Customization[];
+
+  constructor(
+    input: string,
+    container: HTMLElement,
+    settings: RantLangSettings,
+    customizations: Customization[] = []
+  ) {
+    super(input, container, settings);
+    this.customizations = customizations;
+    this.target = container.createEl("p");
   }
 
   renderResult() {
-    const cls = this.enableStyling ? ["rant", "rant-block"] : "";
+    const cls = this.getStyles();
     const newChild = createEl("p", { cls });
     this.container.replaceChild(newChild, this.target);
     this.target = newChild;
@@ -50,17 +62,30 @@ export class CodeblockRantProcessor extends BaseRantProcessor {
 
     this.target.replaceChildren(node);
   }
+
+  getStyles() {
+    let cls = this.settings.enableStyling ? ["rant", "rant-block"] : [];
+    this.customizations.forEach((style) => {
+      cls.push(`rant-${style}`);
+    });
+    return cls;
+  }
 }
 
 /** Processes inline Rant blocks. */
 export class InlineRantProcessor extends BaseRantProcessor {
-  constructor(input: string, container: HTMLElement, target: HTMLElement) {
-    super(input, container);
+  constructor(
+    input: string,
+    container: HTMLElement,
+    target: HTMLElement,
+    settings: RantLangSettings
+  ) {
+    super(input, container, settings);
     this.target = target;
   }
 
   renderResult() {
-    const cls = this.enableStyling ? ["rant", "rant-inline"] : "";
+    const cls = this.settings.enableStyling ? ["rant", "rant-inline"] : "";
     let temp = createEl("span", { cls });
     temp.appendText(this.result);
     this.target.replaceWith(temp);

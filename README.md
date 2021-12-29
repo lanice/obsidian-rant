@@ -1,4 +1,6 @@
 # Obsidian Rant-Lang
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/lanice/obsidian-rant?style=for-the-badge&sort=semver)](https://github.com/deathau/cooklang-obsidian/releases/latest)
+![GitHub All Releases](https://img.shields.io/github/downloads/lanice/obsidian-rant/total?style=for-the-badge)
 
 Thin wrapper around the [Rant language](https://rant-lang.org/) Rust crate to be used in Obsidian.
 
