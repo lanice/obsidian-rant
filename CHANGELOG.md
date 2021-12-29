@@ -1,3 +1,12 @@
+## [0.2.5](https://github.com-personal/lanice/obsidian-rant/compare/0.2.4...0.2.5) (2021-12-29)
+
+
+### Features
+
+* add bold/italic styling options to rant codeblocks ([87e7d55](https://github.com-personal/lanice/obsidian-rant/commit/87e7d55e72c1d5624761d83a8c8c688e865445a5))
+
+
+
 ## [0.2.4](https://github.com-personal/lanice/obsidian-rant/compare/0.2.3...0.2.4) (2021-12-28)
 
 
