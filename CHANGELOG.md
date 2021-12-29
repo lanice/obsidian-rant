@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com-personal/lanice/obsidian-rant/compare/0.2.5...0.3.0) (2021-12-29)
+
+
+### Features
+
+* enable markdown processing within Rant codeblocks ([f1182c1](https://github.com-personal/lanice/obsidian-rant/commit/f1182c116551db61e53b7b9aebc742f177a70f5c))
+
+
+
 ## [0.2.5](https://github.com-personal/lanice/obsidian-rant/compare/0.2.4...0.2.5) (2021-12-29)
 
 
