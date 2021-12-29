@@ -3,6 +3,8 @@
 
 Thin wrapper around the [Rant language](https://rant-lang.org/) Rust crate to be used in Obsidian.
 
+> "**Rant** is a high-level procedural templating language with a diverse toolset for easily creating dynamic code templates, game dialogue, stories, name generators, test data, and much more." - from [Rant's GitHub page](https://github.com/rant-lang/rant)
+
 ## Usage
 
 Use a code block with the `rant` type, in which you can enter a Rant program.
@@ -18,7 +20,7 @@ In order to avoid Rant syntax errors, you can wrap these elements in double quot
 
 ## Examples
 
-> As Rant chooses random block elements to run, the output of the following examples will vary with each re-run of Rant, so what's shown here is just one possible result.
+> **Note:** As Rant chooses random block elements to run, the output of the following examples will vary with each re-run of Rant, so what's shown here is just one possible result.
 
 A Rant program that produces a shuffled deck of cards, taken from the [official Rant examples](https://github.com/rant-lang/rant/tree/master/examples/rant):
 
