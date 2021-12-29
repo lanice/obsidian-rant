@@ -27,7 +27,7 @@ export default class RantLangPlugin extends Plugin {
     const buffer = Uint8Array.from(atob(rustPlugin), (c) => c.charCodeAt(0));
     await init(Promise.resolve(buffer));
 
-    // Settings initialization
+    // Initialize settings.
     this.settings = Object.assign(DEFAULT_SETTINGS, await this.loadData());
     this.addSettingTab(new SettingTab(this.app, this));
 
@@ -53,9 +53,11 @@ export default class RantLangPlugin extends Plugin {
           input,
           el,
           this.settings,
+          ctx.sourcePath,
           customizations
         );
         processor.rant(randomSeed());
+        ctx.addChild(processor);
 
         await this.registerRantProcessorForRerant(processor, file);
       }
@@ -77,9 +79,9 @@ export default class RantLangPlugin extends Plugin {
 
             const processor = new InlineRantProcessor(
               code,
-              el,
               codeblock,
-              this.settings
+              this.settings,
+              ctx.sourcePath
             );
             ctx.addChild(processor);
             processor.rant(randomSeed());

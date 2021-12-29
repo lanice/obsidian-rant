@@ -1,13 +1,13 @@
-.rant {
+.rant-highlight {
     border: 1px solid var(--background-modifier-border);
 }
 
-.rant-block {
-    padding: 4px 8px;
+.rant-highlight.rant-inline {
+    padding: 0px 4px;
 }
 
-.rant-inline {
-    padding: 0px 4px;
+.rant-highlight.rant-block {
+    padding: 0px 8px;
 }
 
 .rant-bold {
