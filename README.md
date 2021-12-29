@@ -6,15 +6,21 @@ Thin wrapper around the [Rant language](https://rant-lang.org/) Rust crate to be
 ## Usage
 
 Use a code block with the `rant` type, in which you can enter a Rant program.
-The program is then compiled and executed with Rant, and the result shown as normal text in the Obsidian preview mode.
+The program is then compiled and executed with Rant, and the result shown as in the Obsidian preview mode.
 
 Use the command `Re-rant with random seed (active file)` (default hotkey: `Cmd+R`/`Ctrl+R`) to run Rant again on each block in the active (preview) file.
 
+It's also possible to insert a Rant program inline by starting an inline code block with "`rant:`".
+
+Within a `rant` (non-inline) code block, the result of the program is then rendered with the Obsidian MarkdownParser.
+That means that you can add styling, links, or other markdown-processing elements inside a `rant` block, and they will be rendered accordingly.
+In order to avoid Rant syntax errors, you can wrap these elements in double quotes, because Rant treats everything inside double quotes as [string literals](https://docs.rant-lang.org/language/text.html#string-literals), and will not evaluate the content.
+
 ## Examples
 
-Taken from the [official Rant examples](https://github.com/rant-lang/rant/tree/master/examples/rant), take a look there for more.
+> As Rant chooses random block elements to run, the output of the following examples will vary with each re-run of Rant, so what's shown here is just one possible result.
 
-This code block:
+A Rant program that produces a shuffled deck of cards, taken from the [official Rant examples](https://github.com/rant-lang/rant/tree/master/examples/rant):
 
 ````markdown
 ```rant
@@ -22,18 +28,76 @@ This code block:
   [rep: 2] {(Joker)} 
   [cat: **(A;2;3;4;5;6;7;8;9;10;J;Q;K); **(♠;♥;♣;♦) |> collect]
 ]
-
 ```
 ````
 
-Could produce this output (the order will be different with each Rant run of course):
+Could produce this output (with a random order on each re-rant):
 
-```
-(J♦; 10♠; 8♦; Joker; 7♥; Q♠; J♣; 2♠; 5♥; 10♥; 7♣; K♠; K♣; 5♠; 6♦; 9♦; A♣; 3♣; 6♣; 3♠; Q♥; 4♠; 4♣; 7♠; J♥; 3♦; A♥; 8♣; 3♥; 6♠; 9♥; 2♦; 2♣; A♠; 8♥; Q♣; K♥; 9♣; 5♦; 2♥; Q♦; 4♦; A♦; 10♦; Joker; K♦; J♠; 8♠; 9♠; 6♥; 10♣; 4♥; 5♣; 7♦)
-```
+![Cards example](img/obsidian-rant-example-cards.png)
 
-It is also possible to use Rant inline by starting an inline code block with `rant:`, like so:
+### Inline
+
+An inline Rant program:
 
 ````markdown
 This inline Rant block is `rant: {neat|awesome|fantastic}`!
 ````
+
+Result:
+
+![Inline example](img/obsidian-rant-example-inline.png)
+
+### Styling
+
+This is an example of how to apply markdown styling within the Rant code block, note the usage of double quotes:
+
+````markdown
+```rant
+"**"{Hello|Hi|Hey}"**" world!
+```
+````
+Result:
+
+![Styling example](img/obsidian-rant-example-styling.png)
+
+### Links
+
+You can use any form of links within a Rant code block, and it properly renders (including page preview on hover):
+
+````markdown
+```rant
+[rep:10][sep:-]{"[[A Page]]"|"[External link](https://www.wikipedia.org)"|Just text}
+```
+````
+Result:
+
+![Link example](img/obsidian-rant-example-links.png)
+
+### Dice-roller
+
+Example using the [dice-roller plugin](https://github.com/valentine195/obsidian-dice-roller) within a Rant block:
+
+````markdown
+```rant
+Suddenly `dice: 2d4` {goblins|dragons|gelatinous cubes} charge at you!
+```
+````
+Result:
+
+![Dice-roller example](img/obsidian-rant-example-dice.png)
+
+### Lists
+
+A Rant program can output lists like this:
+
+````markdown
+```rant
+A list of all kinds of stuff:\n
+[rep:5][sep:\n]{- "[[A page]]"|- Just text|- `dice: 2d12`}
+```
+````
+Result:
+
+![List example](img/obsidian-rant-example-list.png)
+
+
