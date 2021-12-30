@@ -59,7 +59,7 @@ export default class RantLangPlugin extends Plugin {
         processor.rant(randomSeed());
         ctx.addChild(processor);
 
-        await this.registerRantProcessorForRerant(processor, file);
+        await this.registerRantProcessor(processor, file);
       }
     );
 
@@ -86,7 +86,7 @@ export default class RantLangPlugin extends Plugin {
             ctx.addChild(processor);
             processor.rant(randomSeed());
 
-            await this.registerRantProcessorForRerant(processor, file);
+            await this.registerRantProcessor(processor, file);
           }
         }
       }
@@ -123,16 +123,17 @@ export default class RantLangPlugin extends Plugin {
     await this.saveData(this.settings);
   }
 
-  async registerRantProcessorForRerant(
-    processor: BaseRantProcessor,
-    file: TFile
-  ) {
+  async registerRantProcessor(processor: BaseRantProcessor, file: TFile) {
     // File-based tracking of registered processors inspired by javalent's excellent dice roller plugin: https://github.com/valentine195/obsidian-dice-roller
 
     if (!this.fileMap.has(file)) {
       this.fileMap.set(file, []);
     }
     this.fileMap.set(file, [...this.fileMap.get(file), processor]);
+
+    processor.register(() => {
+      this.unregisterRantProcessor(processor, file);
+    });
 
     const view = this.app.workspace.getActiveViewOfType(MarkdownView);
     if (view && this.fileMap.has(file) && this.fileMap.get(file).length === 1) {
@@ -153,6 +154,17 @@ export default class RantLangPlugin extends Plugin {
 
       view.register(unregisterOnUnloadFile);
       view.register(() => this.fileMap.delete(file));
+    }
+  }
+
+  unregisterRantProcessor(processor: BaseRantProcessor, file: TFile) {
+    const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+    if (
+      view &&
+      this.fileMap.has(file) &&
+      this.fileMap.get(file).contains(processor)
+    ) {
+      this.fileMap.get(file).remove(processor);
     }
   }
 }
