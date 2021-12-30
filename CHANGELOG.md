@@ -1,3 +1,13 @@
+## [0.3.1](https://github.com-personal/lanice/obsidian-rant/compare/0.3.0...0.3.1) (2021-12-30)
+
+
+### Bug Fixes
+
+* properly remove rant processors on unload, to avoid re-running rant on all programs that existed in the currently active file's history ([247024b](https://github.com-personal/lanice/obsidian-rant/commit/247024b3272b9f78f862859f6394b750f3e322c4))
+* re-rant was not working properly on inline rant blocksgs ([f494222](https://github.com-personal/lanice/obsidian-rant/commit/f494222ed3ef434ab69887fe8946389f98e5c5ae))
+
+
+
 # [0.3.0](https://github.com-personal/lanice/obsidian-rant/compare/0.2.5...0.3.0) (2021-12-29)
 
 
