@@ -34,11 +34,7 @@ export default class RantLangPlugin extends Plugin {
     // Register Rant codeblocks.
     this.registerMarkdownCodeBlockProcessor(
       "rant",
-      async (
-        source: string,
-        el: HTMLElement,
-        ctx: MarkdownPostProcessorContext
-      ) => {
+      (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
         const file = this.app.vault.getAbstractFileByPath(ctx.sourcePath);
         if (!file || !(file instanceof TFile)) return;
 
@@ -59,13 +55,13 @@ export default class RantLangPlugin extends Plugin {
         processor.rant(randomSeed());
         ctx.addChild(processor);
 
-        await this.registerRantProcessor(processor, file);
+        this.registerRantProcessor(processor, file);
       }
     );
 
     // Register inline Rant blocks.
     this.registerMarkdownPostProcessor(
-      async (el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
+      (el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
         const file = this.app.vault.getAbstractFileByPath(ctx.sourcePath);
         if (!file || !(file instanceof TFile)) return;
 
@@ -76,17 +72,19 @@ export default class RantLangPlugin extends Plugin {
           const text = codeblock.innerText.trim();
           if (text.startsWith(inlineRantQueryPrefix)) {
             const code = text.substring(inlineRantQueryPrefix.length).trim();
+            const container = el.createSpan();
+            codeblock.replaceWith(container);
 
             const processor = new InlineRantProcessor(
               code,
-              codeblock,
+              container,
               this.settings,
               ctx.sourcePath
             );
-            ctx.addChild(processor);
             processor.rant(randomSeed());
+            ctx.addChild(processor);
 
-            await this.registerRantProcessor(processor, file);
+            this.registerRantProcessor(processor, file);
           }
         }
       }
@@ -123,7 +121,7 @@ export default class RantLangPlugin extends Plugin {
     await this.saveData(this.settings);
   }
 
-  async registerRantProcessor(processor: BaseRantProcessor, file: TFile) {
+  registerRantProcessor(processor: BaseRantProcessor, file: TFile) {
     // File-based tracking of registered processors inspired by javalent's excellent dice roller plugin: https://github.com/valentine195/obsidian-dice-roller
 
     if (!this.fileMap.has(file)) {

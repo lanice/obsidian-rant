@@ -60,10 +60,9 @@ export class CodeblockRantProcessor extends BaseRantProcessor {
 
 export class InlineRantProcessor extends BaseRantProcessor {
   renderResult() {
-    let temp = createEl("span", { cls: this.getStyles() });
-    temp.appendText(this.result);
-    this.container.replaceWith(temp);
-    this.container = temp;
+    this.container.empty();
+    this.container.className = this.getStyles().join(" ");
+    this.container.appendText(this.result);
   }
 
   getStyles() {
