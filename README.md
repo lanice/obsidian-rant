@@ -102,4 +102,16 @@ Result:
 
 ![List example](img/obsidian-rant-example-list.png)
 
+## Installation
 
+### Via [BRAT](https://github.com/TfTHacker/obsidian42-brat)
+
+1. Add `lanice/obsidian-rant` to the list of Beta plugins in the `Obsidian42 - BRAT` settings menu
+2. Enable the plugin in the [Community plugins](https://help.obsidian.md/Advanced+topics/Community+plugins) settings menu
+
+### Manually
+
+1. Download the [latest release](https://github.com/lanice/obsidian-rant/releases/latest)
+2. Extract the `obsidian-rant` folder from the zip to your vault `<vault>/.obsidian/plugins/`
+3. Reload Obsidian
+4. Enable the plugin in the [Community plugins](https://help.obsidian.md/Advanced+topics/Community+plugins) settings menu
