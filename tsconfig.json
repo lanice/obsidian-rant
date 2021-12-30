@@ -14,9 +14,11 @@
       "ES5",
       "ES6",
       "ES7"
-    ]
+    ],
+    "outDir": "out-tsc",
+    "rootDir": "./src"
   },
   "include": [
-    "src/**/*.ts"
+    "./src/**/*.ts"
   ]
 }

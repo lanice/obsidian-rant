@@ -4,8 +4,8 @@
   "description": "Thin wrapper around the Rant language Rust crate",
   "main": "main.js",
   "scripts": {
-    "compile": "wasm-pack build --target web && rollup --config rollup.config.js",
-    "build": "rollup --config rollup.config.js",
+    "compile": "wasm-pack build --target web && tsc && rollup --config rollup.config.js",
+    "build": "tsc && rollup --config rollup.config.js",
     "watch": "rollup --watch --config rollup.config.js"
   },
   "keywords": [
@@ -18,11 +18,11 @@
     "@open-wc/building-rollup": "^2.0.1",
     "@rollup/plugin-commonjs": "^15.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
+    "@rollup/plugin-typescript": "^8.3.0",
     "monkey-around": "^2.2.0",
     "obsidian": "^0.12.17",
     "rollup": "^2.32.1",
     "rollup-plugin-base64": "^1.0.1",
-    "rollup-plugin-typescript2": "^0.31.1",
     "typescript": "^4.5.4"
   }
 }
