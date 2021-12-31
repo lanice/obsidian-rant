@@ -8,13 +8,13 @@ Thin wrapper around the [Rant language](https://rant-lang.org/) Rust crate to be
 ## Usage
 
 Use a code block with the `rant` type, in which you can enter a Rant program.
-The program is then compiled and executed with Rant, and the result shown as in the Obsidian preview mode.
+The program is then compiled and executed with Rant, and the result shown in the Obsidian preview mode.
 
 Use the command `Re-rant with random seed (active file)` (default hotkey: `Cmd+R`/`Ctrl+R`) to run Rant again on each block in the active (preview) file.
 
 It's also possible to insert a Rant program inline by starting an inline code block with "`rant:`".
 
-Within a `rant` (non-inline) code block, the result of the program is then rendered with the Obsidian MarkdownParser.
+Within a `rant` block (both inline and code blocks), the result of the program is then rendered with the Obsidian MarkdownParser.
 That means that you can add styling, links, or other markdown-processing elements inside a `rant` block, and they will be rendered accordingly.
 In order to avoid Rant syntax errors, you can wrap these elements in double quotes, because Rant treats everything inside double quotes as [string literals](https://docs.rant-lang.org/language/text.html#string-literals), and will not evaluate the content.
 

@@ -60,9 +60,17 @@ export class CodeblockRantProcessor extends BaseRantProcessor {
 
 export class InlineRantProcessor extends BaseRantProcessor {
   renderResult() {
+    let temp = createEl("div");
+    MarkdownRenderer.renderMarkdown(this.result, temp, this.sourcePath, this);
+
     this.container.empty();
     this.container.className = this.getStyles().join(" ");
-    this.container.appendText(this.result);
+
+    temp.childNodes.forEach((paragraph) => {
+      paragraph.childNodes.forEach((node) => {
+        this.container.appendChild(node.cloneNode(true));
+      });
+    });
   }
 
   getStyles() {
