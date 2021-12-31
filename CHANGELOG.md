@@ -1,3 +1,12 @@
+## [0.3.2](https://github.com/lanice/obsidian-rant/compare/0.3.1...0.3.2) (2021-12-31)
+
+
+### Features
+
+* Allow Markdown parsing of inline rant blocks as well, enabling styling, links, etc. ([c726232](https://github.com/lanice/obsidian-rant/commit/c72623245b973902f1914b80d8e709a247e59bfe))
+
+
+
 ## [0.3.1](https://github.com/lanice/obsidian-rant/compare/0.3.0...0.3.1) (2021-12-30)
 
 
