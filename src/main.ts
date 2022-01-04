@@ -116,6 +116,10 @@ export default class RantLangPlugin extends Plugin {
     });
   }
 
+  async onunload() {
+    delete this.fileMap;
+  }
+
   async updateSettings(settings: Partial<RantLangSettings>) {
     Object.assign(this.settings, settings);
     await this.saveData(this.settings);
@@ -132,37 +136,15 @@ export default class RantLangPlugin extends Plugin {
     processor.register(() => {
       this.unregisterRantProcessor(processor, file);
     });
-
-    const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-    if (view && this.fileMap.has(file) && this.fileMap.get(file).length === 1) {
-      const self = this;
-
-      const unregisterOnUnloadFile = around(view, {
-        onUnloadFile: function (next) {
-          return async function (unloaded: TFile) {
-            if (unloaded == file) {
-              self.fileMap.delete(file);
-              unregisterOnUnloadFile();
-            }
-
-            return await next.call(this, unloaded);
-          };
-        },
-      });
-
-      view.register(unregisterOnUnloadFile);
-      view.register(() => this.fileMap.delete(file));
-    }
   }
 
   unregisterRantProcessor(processor: BaseRantProcessor, file: TFile) {
-    const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-    if (
-      view &&
-      this.fileMap.has(file) &&
-      this.fileMap.get(file).contains(processor)
-    ) {
+    if (this.fileMap.has(file) && this.fileMap.get(file).contains(processor)) {
       this.fileMap.get(file).remove(processor);
+
+      if (this.fileMap.get(file).length == 0) {
+        this.fileMap.delete(file);
+      }
     }
   }
 }
