@@ -1,6 +1,7 @@
 import { MarkdownRenderChild, MarkdownRenderer } from "obsidian";
 import { rant } from "../pkg/obsidian_rantlang_plugin.js";
 import { RantLangSettings } from "./settings.js";
+import { randomSeed } from "./utils.js";
 
 export abstract class BaseRantProcessor extends MarkdownRenderChild {
   result: string = "";
@@ -13,6 +14,7 @@ export abstract class BaseRantProcessor extends MarkdownRenderChild {
     public customizations: Customization[] = []
   ) {
     super(container);
+    this.rant();
   }
 
   abstract renderResult(): void;
@@ -26,8 +28,8 @@ export abstract class BaseRantProcessor extends MarkdownRenderChild {
     }
   }
 
-  rant(seed: number) {
-    this.processInput(seed);
+  rant(seed?: number) {
+    this.processInput(seed ?? randomSeed());
     this.renderResult();
   }
 }

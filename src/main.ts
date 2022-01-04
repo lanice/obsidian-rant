@@ -15,7 +15,6 @@ import {
   BaseRantProcessor,
   Customization,
 } from "./processor";
-import { randomSeed } from "./utils";
 import SettingTab, { DEFAULT_SETTINGS, RantLangSettings } from "./settings";
 
 export default class RantLangPlugin extends Plugin {
@@ -52,7 +51,6 @@ export default class RantLangPlugin extends Plugin {
           ctx.sourcePath,
           customizations
         );
-        processor.rant(randomSeed());
         ctx.addChild(processor);
 
         this.registerRantProcessor(processor, file);
@@ -81,7 +79,6 @@ export default class RantLangPlugin extends Plugin {
               this.settings,
               ctx.sourcePath
             );
-            processor.rant(randomSeed());
             ctx.addChild(processor);
 
             this.registerRantProcessor(processor, file);
@@ -105,7 +102,7 @@ export default class RantLangPlugin extends Plugin {
             const processors = this.fileMap.get(view.file);
 
             processors.forEach((processor) => {
-              processor.rant(randomSeed());
+              processor.rant();
             });
 
             new Notice("Re-processed Rant blocks");
