@@ -35,7 +35,7 @@ A Rant program that produces a shuffled deck of cards, taken from the [official 
 
 Could produce this output (with a random order on each re-rant):
 
-![Cards example](img/obsidian-rant-example-cards.png)
+![Cards example](https://raw.githubusercontent.com/lanice/obsidian-rant/master/img/obsidian-rant-example-cards.png)
 
 ### Inline
 
@@ -47,7 +47,7 @@ This inline Rant block is `rant: {neat|awesome|fantastic}`!
 
 Result:
 
-![Inline example](img/obsidian-rant-example-inline.png)
+![Inline example](https://raw.githubusercontent.com/lanice/obsidian-rant/master/img/obsidian-rant-example-inline.png)
 
 ### Styling
 
@@ -60,7 +60,7 @@ This is an example of how to apply markdown styling within the Rant code block, 
 ````
 Result:
 
-![Styling example](img/obsidian-rant-example-styling.png)
+![Styling example](https://raw.githubusercontent.com/lanice/obsidian-rant/master/img/obsidian-rant-example-styling.png)
 
 ### Links
 
@@ -73,7 +73,7 @@ You can use any form of links within a Rant code block, and it properly renders 
 ````
 Result:
 
-![Link example](img/obsidian-rant-example-links.png)
+![Link example](https://raw.githubusercontent.com/lanice/obsidian-rant/master/img/obsidian-rant-example-links.png)
 
 ### Dice-roller
 
@@ -86,7 +86,7 @@ Suddenly `dice: 2d4` {goblins|dragons|gelatinous cubes} charge at you!
 ````
 Result:
 
-![Dice-roller example](img/obsidian-rant-example-dice.png)
+![Dice-roller example](https://raw.githubusercontent.com/lanice/obsidian-rant/master/img/obsidian-rant-example-dice.png)
 
 ### Lists
 
@@ -100,9 +100,17 @@ A list of all kinds of stuff:\n
 ````
 Result:
 
-![List example](img/obsidian-rant-example-list.png)
+![List example](https://raw.githubusercontent.com/lanice/obsidian-rant/master/img/obsidian-rant-example-list.png)
 
 ## Installation
+
+### From within Obsidian
+
+1. Open Settings > Community plugins
+2. Make sure "Safe mode" is **off**
+3. In the community plugins browser, search for "Rant-Lang"
+4. Install & Enable
+5. Profit
 
 ### Via [BRAT](https://github.com/TfTHacker/obsidian42-brat)
 
