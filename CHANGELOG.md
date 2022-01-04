@@ -1,3 +1,12 @@
+## [0.3.3](https://github.com/lanice/obsidian-rant/compare/0.3.2...0.3.3) (2022-01-04)
+
+
+### Bug Fixes
+
+* Properly unload rant processors ([e56a29f](https://github.com/lanice/obsidian-rant/commit/e56a29f44dc51bbcc6121fd4363ee5c40a85d5d3))
+
+
+
 ## [0.3.2](https://github.com/lanice/obsidian-rant/compare/0.3.1...0.3.2) (2021-12-31)
 
 
