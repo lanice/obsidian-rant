@@ -7,7 +7,6 @@ import {
 } from "obsidian";
 // @ts-ignore
 import rustPlugin from "../pkg/obsidian_rantlang_plugin_bg.wasm";
-import { around } from "monkey-around";
 import init from "../pkg/obsidian_rantlang_plugin.js";
 import {
   CodeblockRantProcessor,
