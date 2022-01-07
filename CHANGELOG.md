@@ -1,3 +1,17 @@
+# [0.4.0](https://github.com/lanice/obsidian-rant/compare/0.3.3...0.4.0) (2022-01-07)
+
+
+### Bug Fixes
+
+* Fix markdown processing of code blocks (e.g. dice roller) within inline rant block and block links ([adc2a09](https://github.com/lanice/obsidian-rant/commit/adc2a092b44f11dd96f919c920352a2b62364eca))
+
+
+### Features
+
+* Allow embedding block links in inline rant blocks ([fcb9646](https://github.com/lanice/obsidian-rant/commit/fcb9646864c210e5e89bc378009b10a89d4f001f))
+
+
+
 ## [0.3.3](https://github.com/lanice/obsidian-rant/compare/0.3.2...0.3.3) (2022-01-04)
 
 
