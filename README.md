@@ -19,6 +19,8 @@ Within a `rant` block (both inline and code blocks), the result of the program i
 That means that you can add styling, links, or other markdown-processing elements inside a `rant` block, and they will be rendered accordingly.
 In order to avoid Rant syntax errors, you can wrap these elements in double quotes, because Rant treats everything inside double quotes as [string literals](https://docs.rant-lang.org/language/text.html#string-literals), and will not evaluate the content.
 
+You can also embed the result of an existing rant codeblock into any other document by using [block links](https://help.obsidian.md/How+to/Link+to+blocks ) inside an inline rant-block, like [shown below](#embedding-rant-blocks)
+
 ## Examples
 
 > **Note:** As Rant chooses random block elements to run, the output of the following examples will vary with each re-run of Rant, so what's shown here is just one possible result.
@@ -102,6 +104,23 @@ A list of all kinds of stuff:\n
 Result:
 
 ![List example](https://raw.githubusercontent.com/lanice/obsidian-rant/master/img/obsidian-rant-example-list.png)
+
+### Embedding Rant Blocks
+
+When you have a rant codeblock inside a document called `Programs` that you want to embed in another document, first give it an ID using the `^` notation:
+
+````markdown
+```rant
+{heads|tails|edge}
+```
+^coin-flip
+````
+
+Then you can embed it like so:
+
+````markdown
+Flipping a coin... It landed on `rant: [[Programs#^coin-flip]]`!
+````
 
 ## Installation
 
