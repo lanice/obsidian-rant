@@ -61,17 +61,18 @@ export class CodeblockRantProcessor extends BaseRantProcessor {
 
 export class InlineRantProcessor extends BaseRantProcessor {
   renderResult() {
-    let temp = createEl("div");
+    let temp = createEl("span");
     MarkdownRenderer.renderMarkdown(this.result, temp, this.sourcePath, this);
 
-    this.container.empty();
-    this.container.className = this.getStyles().join(" ");
-
+    let nodes: Node[] = [];
     temp.childNodes.forEach((paragraph) => {
-      paragraph.childNodes.forEach((node) => {
-        this.container.appendChild(node.cloneNode(true));
-      });
+      nodes.push(...(paragraph.childNodes as any as Node[]));
+      nodes.push(createEl("br"));
     });
+    nodes.pop();
+
+    this.container.className = this.getStyles().join(" ");
+    this.container.replaceChildren(...nodes);
   }
 
   getStyles() {
@@ -134,17 +135,18 @@ export class BlockLinkRantProcessor extends BaseRantProcessor {
   }
 
   renderResult() {
-    let temp = createEl("div");
+    let temp = createEl("span");
     MarkdownRenderer.renderMarkdown(this.result, temp, this.sourcePath, this);
 
-    this.container.empty();
-    this.container.className = this.getStyles().join(" ");
-
+    let nodes: Node[] = [];
     temp.childNodes.forEach((paragraph) => {
-      paragraph.childNodes.forEach((node) => {
-        this.container.appendChild(node.cloneNode(true));
-      });
+      nodes.push(...(paragraph.childNodes as any as Node[]));
+      nodes.push(createEl("br"));
     });
+    nodes.pop();
+
+    this.container.className = this.getStyles().join(" ");
+    this.container.replaceChildren(...nodes);
   }
 
   getStyles() {

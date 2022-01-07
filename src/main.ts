@@ -67,11 +67,11 @@ export default class RantLangPlugin extends Plugin {
             codeblock.replaceWith(container);
 
             const code = text.substring(inlineRantQueryPrefix.length).trim();
-            const processorClass = code.match(BLOCK_LINK_REGEX)
+            const Processor = code.match(BLOCK_LINK_REGEX)
               ? BlockLinkRantProcessor
               : InlineRantProcessor;
 
-            const processor = new processorClass(
+            const processor = new Processor(
               this,
               code,
               container,
