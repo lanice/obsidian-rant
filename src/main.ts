@@ -13,13 +13,15 @@ import {
   CodeblockRantProcessor,
   InlineRantProcessor,
   BaseRantProcessor,
-  Customization,
+  BlockLinkRantProcessor,
+  BLOCK_LINK_REGEX,
 } from "./processor";
 import SettingTab, { DEFAULT_SETTINGS, RantLangSettings } from "./settings";
 
 export default class RantLangPlugin extends Plugin {
   settings: RantLangSettings;
   fileMap: Map<TFile, BaseRantProcessor[]> = new Map();
+  rantBlockStore: Map<string, TFile> = new Map();
 
   async onload() {
     // Load WebAssembly Rust plugin to have access to the Rust Rant crate.
@@ -37,19 +39,12 @@ export default class RantLangPlugin extends Plugin {
         const file = this.app.vault.getAbstractFileByPath(ctx.sourcePath);
         if (!file || !(file instanceof TFile)) return;
 
-        let customizations: Customization[] = [];
-        let lines = source.split("\n");
-        while (lines.length > 0 && ["bold", "italic"].contains(lines[0])) {
-          customizations.push(lines.shift() as Customization);
-        }
-        const input = lines.join("\n");
-
         const processor = new CodeblockRantProcessor(
-          input,
+          this,
+          source,
           el,
           this.settings,
-          ctx.sourcePath,
-          customizations
+          ctx.sourcePath
         );
         ctx.addChild(processor);
 
@@ -69,11 +64,16 @@ export default class RantLangPlugin extends Plugin {
           const codeblock = codeblocks.item(index);
           const text = codeblock.innerText.trim();
           if (text.startsWith(inlineRantQueryPrefix)) {
-            const code = text.substring(inlineRantQueryPrefix.length).trim();
             const container = el.createSpan();
             codeblock.replaceWith(container);
 
-            const processor = new InlineRantProcessor(
+            const code = text.substring(inlineRantQueryPrefix.length).trim();
+            const processorClass = code.match(BLOCK_LINK_REGEX)
+              ? BlockLinkRantProcessor
+              : InlineRantProcessor;
+
+            const processor = new processorClass(
+              this,
               code,
               container,
               this.settings,
