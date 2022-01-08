@@ -84,7 +84,7 @@ export class InlineRantProcessor extends BaseRantProcessor {
   }
 }
 
-export class BlockLinkRantProcessor extends BaseRantProcessor {
+export class BlockLinkRantProcessor extends InlineRantProcessor {
   loaded: boolean = false;
   path: string;
   block: string;
@@ -132,28 +132,5 @@ export class BlockLinkRantProcessor extends BaseRantProcessor {
         .join("\n");
       super.rant(rantProgram);
     });
-  }
-
-  renderResult() {
-    let temp = createEl("span");
-    MarkdownRenderer.renderMarkdown(this.result, temp, this.sourcePath, this);
-
-    let nodes: Node[] = [];
-    temp.childNodes.forEach((paragraph) => {
-      nodes.push(...(paragraph.childNodes as any as Node[]));
-      nodes.push(createEl("br"));
-    });
-    nodes.pop();
-
-    this.container.className = this.getStyles().join(" ");
-    this.container.replaceChildren(...nodes);
-  }
-
-  getStyles() {
-    let cls = ["rant-inline"];
-    if (this.settings.highlight) {
-      cls.push("rant-highlight");
-    }
-    return cls;
   }
 }
