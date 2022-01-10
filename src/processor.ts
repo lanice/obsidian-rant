@@ -39,6 +39,47 @@ export abstract class BaseRantProcessor extends MarkdownRenderChild {
 }
 
 export class CodeblockRantProcessor extends BaseRantProcessor {
+  rant(input?: string, seed?: number) {
+    this.resolveImports(input ?? this.input).then((program) => {
+      this.processInput(program, seed ?? randomSeed());
+      this.renderResult();
+    });
+  }
+
+  async resolveImports(input: string): Promise<string> {
+    let program = "";
+    let lines = input.split("\n");
+    while (lines.length > 0 && lines[0].startsWith("import:")) {
+      const blockLink = lines.shift().split("import:")[1].trim();
+
+      const { groups } = blockLink.match(BLOCK_LINK_REGEX);
+      const path = groups.link.replace(/(\[|\])/g, "");
+      const block = groups.block.replace(/(\^|#)/g, "").trim();
+
+      const file = this.plugin.app.metadataCache.getFirstLinkpathDest(
+        path,
+        this.sourcePath
+      );
+
+      if (!file || !(file instanceof TFile)) {
+        throw new Error("Could not load file.");
+      }
+
+      const cache = this.plugin.app.metadataCache.getFileCache(file);
+      const position = cache.blocks[block].position;
+
+      const content = await this.plugin.app.vault.cachedRead(file);
+      const rantProgram = content
+        .split("\n")
+        .slice(position.start.line + 1, position.end.line)
+        .join("\n");
+
+      program += await this.resolveImports(rantProgram);
+    }
+
+    return program + "\n" + lines.join("\n");
+  }
+
   renderResult() {
     this.container.empty();
     const content = this.container.createDiv({ cls: this.getStyles() });
