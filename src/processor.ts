@@ -4,8 +4,7 @@ import type RantLangPlugin from "./main";
 import { RantLangSettings } from "./settings";
 import { randomSeed } from "./utils";
 
-export const BLOCK_LINK_REGEX =
-  /\[\[(?<link>[\s\S]+?)#?\^(?<block>[\s\S]+?)\]\]/;
+const BLOCK_LINK_REGEX = /\[\[(?<link>[\s\S]+?)#?\^(?<block>[\s\S]+?)\]\]/;
 
 export abstract class BaseRantProcessor extends MarkdownRenderChild {
   result: string = "";
@@ -23,7 +22,7 @@ export abstract class BaseRantProcessor extends MarkdownRenderChild {
 
   abstract renderResult(): void;
 
-  processInput(input: string, seed: number) {
+  compileWithRant(input: string, seed: number) {
     try {
       this.result = rant(input, seed);
     } catch (error) {
@@ -33,15 +32,8 @@ export abstract class BaseRantProcessor extends MarkdownRenderChild {
   }
 
   rant(input?: string, seed?: number) {
-    this.processInput(input ?? this.input, seed ?? randomSeed());
-    this.renderResult();
-  }
-}
-
-export class CodeblockRantProcessor extends BaseRantProcessor {
-  rant(input?: string, seed?: number) {
     this.resolveImports(input ?? this.input).then((program) => {
-      this.processInput(program, seed ?? randomSeed());
+      this.compileWithRant(program, seed ?? randomSeed());
       this.renderResult();
     });
   }
@@ -51,35 +43,40 @@ export class CodeblockRantProcessor extends BaseRantProcessor {
     let lines = input.split("\n");
     while (lines.length > 0 && lines[0].startsWith("import:")) {
       const blockLink = lines.shift().split("import:")[1].trim();
-
-      const { groups } = blockLink.match(BLOCK_LINK_REGEX);
-      const path = groups.link.replace(/(\[|\])/g, "");
-      const block = groups.block.replace(/(\^|#)/g, "").trim();
-
-      const file = this.plugin.app.metadataCache.getFirstLinkpathDest(
-        path,
-        this.sourcePath
-      );
-
-      if (!file || !(file instanceof TFile)) {
-        throw new Error("Could not load file.");
-      }
-
-      const cache = this.plugin.app.metadataCache.getFileCache(file);
-      const position = cache.blocks[block].position;
-
-      const content = await this.plugin.app.vault.cachedRead(file);
-      const rantProgram = content
-        .split("\n")
-        .slice(position.start.line + 1, position.end.line)
-        .join("\n");
-
+      const rantProgram = await this.readProgramFromBlockLink(blockLink);
       program += await this.resolveImports(rantProgram);
     }
-
     return program + "\n" + lines.join("\n");
   }
 
+  async readProgramFromBlockLink(blockLink: string): Promise<string> {
+    const { groups } = blockLink.match(BLOCK_LINK_REGEX);
+    const path = groups.link.replace(/(\[|\])/g, "");
+    const block = groups.block.replace(/(\^|#)/g, "").trim();
+
+    const file = this.plugin.app.metadataCache.getFirstLinkpathDest(
+      path,
+      this.sourcePath
+    );
+
+    if (!file || !(file instanceof TFile)) {
+      throw new Error("Could not load file.");
+    }
+
+    const cache = this.plugin.app.metadataCache.getFileCache(file);
+    const position = cache.blocks[block].position;
+
+    const content = await this.plugin.app.vault.cachedRead(file);
+    const program = content
+      .split("\n")
+      .slice(position.start.line + 1, position.end.line)
+      .join("\n");
+
+    return program;
+  }
+}
+
+export class CodeblockRantProcessor extends BaseRantProcessor {
   renderResult() {
     this.container.empty();
     const content = this.container.createDiv({ cls: this.getStyles() });
@@ -101,6 +98,16 @@ export class CodeblockRantProcessor extends BaseRantProcessor {
 }
 
 export class InlineRantProcessor extends BaseRantProcessor {
+  rant(input?: string, seed?: number) {
+    if ((input ?? this.input).match(BLOCK_LINK_REGEX)) {
+      this.readProgramFromBlockLink(input ?? this.input).then((program) => {
+        super.rant(program, seed);
+      });
+    } else {
+      super.rant(input, seed);
+    }
+  }
+
   renderResult() {
     let temp = createEl("span");
     MarkdownRenderer.renderMarkdown(this.result, temp, this.sourcePath, this);
@@ -122,56 +129,5 @@ export class InlineRantProcessor extends BaseRantProcessor {
       cls.push("rant-highlight");
     }
     return cls;
-  }
-}
-
-export class BlockLinkRantProcessor extends InlineRantProcessor {
-  loaded: boolean = false;
-  path: string;
-  block: string;
-
-  constructor(
-    plugin: RantLangPlugin,
-    input: string,
-    container: HTMLElement,
-    settings: RantLangSettings,
-    sourcePath: string
-  ) {
-    super(plugin, input, container, settings, sourcePath);
-    this.parseBlockLink(input);
-    this.rant();
-  }
-
-  parseBlockLink(blockLink: string) {
-    const { groups } = blockLink.match(BLOCK_LINK_REGEX);
-    this.path = groups.link.replace(/(\[|\])/g, "");
-    this.block = groups.block.replace(/(\^|#)/g, "").trim();
-    this.loaded = true;
-  }
-
-  rant() {
-    if (!this.loaded) {
-      return;
-    }
-
-    const file = this.plugin.app.metadataCache.getFirstLinkpathDest(
-      this.path,
-      this.sourcePath
-    );
-
-    if (!file || !(file instanceof TFile)) {
-      throw new Error("Could not load file.");
-    }
-
-    const cache = this.plugin.app.metadataCache.getFileCache(file);
-    const position = cache.blocks[this.block].position;
-
-    this.plugin.app.vault.cachedRead(file).then((content) => {
-      const rantProgram = content
-        .split("\n")
-        .slice(position.start.line + 1, position.end.line)
-        .join("\n");
-      super.rant(rantProgram);
-    });
   }
 }

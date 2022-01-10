@@ -12,8 +12,6 @@ import {
   CodeblockRantProcessor,
   InlineRantProcessor,
   BaseRantProcessor,
-  BlockLinkRantProcessor,
-  BLOCK_LINK_REGEX,
 } from "./processor";
 import SettingTab, { DEFAULT_SETTINGS, RantLangSettings } from "./settings";
 
@@ -67,11 +65,7 @@ export default class RantLangPlugin extends Plugin {
             codeblock.replaceWith(container);
 
             const code = text.substring(inlineRantQueryPrefix.length).trim();
-            const Processor = code.match(BLOCK_LINK_REGEX)
-              ? BlockLinkRantProcessor
-              : InlineRantProcessor;
-
-            const processor = new Processor(
+            const processor = new InlineRantProcessor(
               this,
               code,
               container,
