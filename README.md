@@ -6,6 +6,22 @@ Thin wrapper around the [Rant language](https://rant-lang.org/) Rust crate to be
 
 > "**Rant** is a high-level procedural templating language with a diverse toolset for easily creating dynamic code templates, game dialogue, stories, name generators, test data, and much more." - from [Rant's GitHub page](https://github.com/rant-lang/rant)
 
+## Table of Contents
+- [Usage](#usage)
+- [Examples](#examples)
+  - [Inline](#inline)
+  - [Styling](#styling)
+  - [Links](#links)
+  - [Dice-roller](#dice-roller)
+  - [Lists](#lists)
+- [Embedding Rant Blocks](#embedding-rant-blocks)
+  - [Inline](#inline-1)
+  - [Within codeblocks](#within-codeblocks)
+- [Installation](#installation)
+  - [From within Obsidian](#from-within-obsidian)
+  - [Via BRAT](#via-brat)
+  - [Manually](#manually)
+
 ## Usage
 
 Use a code block with the `rant` type, in which you can enter a Rant program.
