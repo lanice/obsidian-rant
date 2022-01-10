@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/lanice/obsidian-rant/compare/0.4.0...0.5.0) (2022-01-10)
+
+
+### Features
+
+* Allow importing rant codeblocks via BlockLink into other rant codeblocks using 'import: [[File#^block-id]]' statements at the top of the program ([3f625b7](https://github.com/lanice/obsidian-rant/commit/3f625b70c4a0f8f9ee967d06d911ed606816853c))
+
+
+
 # [0.4.0](https://github.com/lanice/obsidian-rant/compare/0.3.3...0.4.0) (2022-01-07)
 
 
