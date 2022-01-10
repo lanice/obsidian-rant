@@ -19,7 +19,7 @@ Within a `rant` block (both inline and code blocks), the result of the program i
 That means that you can add styling, links, or other markdown-processing elements inside a `rant` block, and they will be rendered accordingly.
 In order to avoid Rant syntax errors, you can wrap these elements in double quotes, because Rant treats everything inside double quotes as [string literals](https://docs.rant-lang.org/language/text.html#string-literals), and will not evaluate the content.
 
-You can also embed the result of an existing rant codeblock into any other document by using [block links](https://help.obsidian.md/How+to/Link+to+blocks ) inside an inline rant-block, like [shown below](#embedding-rant-blocks)
+You can also embed the result of an existing rant codeblock into any other document or other rant block by using [block links](https://help.obsidian.md/How+to/Link+to+blocks), see [these examples](#embedding-rant-blocks) for details.
 
 ## Examples
 
@@ -105,7 +105,9 @@ Result:
 
 ![List example](https://raw.githubusercontent.com/lanice/obsidian-rant/master/img/obsidian-rant-example-list.png)
 
-### Embedding Rant Blocks
+## Embedding Rant Blocks
+
+### Inline
 
 When you have a rant codeblock inside a document called `Programs` that you want to embed in another document, first give it an ID using the `^` notation:
 
@@ -121,6 +123,40 @@ Then you can embed it like so:
 ````markdown
 Flipping a coin... It landed on `rant: [[Programs#^coin-flip]]`!
 ````
+
+### Within codeblocks
+
+Inside a rant codeblock, you can import rant codeblocks from other documents by starting the codeblock with `import: [[File#^{block-id}]]` statements.
+
+> Important: `import: ` statements can only be used as very first lines in a rant codeblock. Once any line does not begin with `import:`, the regular `rant` program starts, and you can't import anything else. One import per line.
+
+Here is an example, we define rant blocks that define functions, import the block, and call the functions:
+
+````markdown
+```rant
+[$flip-coin: heads; tails] {
+    {<heads>|<tails>}
+}
+```
+^flip-coin
+
+```rant
+import: [[Programs#^flip-coin]]
+
+[$flip-coin-with-values] {
+    [flip-coin: Heads; Tails]
+}
+```
+^flip-coin-with-values
+
+```rant
+import: [[Programs#^flip-coin-with-values]]
+
+"Flipping a coin... "[flip-coin-with-values]!
+```
+````
+
+As you can see, nested `import`s are supported, so you can import one (or multiple) programs in one block, and then import that block in another, and so on.
 
 ## Installation
 
