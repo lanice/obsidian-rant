@@ -1,3 +1,7 @@
+## [0.5.1](https://github.com/lanice/obsidian-rant/compare/0.5.0...0.5.1) (2022-01-11)
+
+
+
 # [0.5.0](https://github.com/lanice/obsidian-rant/compare/0.4.0...0.5.0) (2022-01-10)
 
 
