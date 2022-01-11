@@ -100,7 +100,7 @@ Example using the [dice-roller plugin](https://github.com/valentine195/obsidian-
 
 ````markdown
 ```rant
-Suddenly `dice: 2d4` {goblins|dragons|gelatinous cubes} charge at you!
+Suddenly "`dice: 2d4`" {goblins|dragons|gelatinous cubes} charge at you!
 ```
 ````
 Result:
@@ -114,7 +114,7 @@ A Rant program can output lists like this:
 ````markdown
 ```rant
 A list of all kinds of stuff:\n
-[rep:5][sep:\n]{- "[[A page]]"|- Just text|- `dice: 2d12`}
+[rep:5][sep:\n]{- "[[A page]]"|- Just text|- "`dice: 2d12`"}
 ```
 ````
 Result:
@@ -144,7 +144,7 @@ Flipping a coin... It landed on `rant: [[Programs#^coin-flip]]`!
 
 Inside a rant codeblock, you can import rant codeblocks from other documents by starting the codeblock with `import: [[File#^{block-id}]]` statements.
 
-> Important: `import: ` statements can only be used as very first lines in a rant codeblock. Once any line does not begin with `import:`, the regular `rant` program starts, and you can't import anything else. One import per line.
+> Important: `import:` statements can only be used as very first lines in a rant codeblock. Once any line does not begin with `import:`, the regular `rant` program starts, and you can't import anything else. One import per line.
 
 Here is an example, we define rant blocks that define functions, import the block, and call the functions:
 
