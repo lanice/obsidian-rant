@@ -1,6 +1,6 @@
 [package]
 name = "obsidian-rantlang-plugin"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["lanice"]
 edition = "2021"
 
@@ -10,4 +10,4 @@ crate-type = ["cdylib"]
 [dependencies]
 wasm-bindgen = "0.2"
 getrandom = { version="*", features = ["js"] }
-rant = { git = "https://github.com/lanice/rant" }
+rant = "4.0.0-alpha.23"

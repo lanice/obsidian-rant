@@ -22,12 +22,9 @@ checksum = "a4a45a46ab1f2412e53d3a0ade76ffad2025804294569aae387231a0cd6e0899"
 
 [[package]]
 name = "cast"
-version = "0.2.7"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4c24dab4283a142afa2fdca129b80ad2c6284e073930f964c3a1293c225ee39a"
-dependencies = [
- "rustc_version",
-]
+checksum = "37b2a672a2cb129a2e41c10b1224bb368f9f37a2b16b612598138befd7b37eb5"
 
 [[package]]
 name = "cervine"
@@ -138,7 +135,7 @@ dependencies = [
 
 [[package]]
 name = "obsidian-rantlang-plugin"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "getrandom",
  "rant",
@@ -237,7 +234,8 @@ dependencies = [
 [[package]]
 name = "rant"
 version = "4.0.0-alpha.23"
-source = "git+https://github.com/lanice/rant#c8ce5566d119539a0cdba27aafe5ace6bd31a800"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8c7458c8c7796082c292bf5414cc505be519c3a459f4d58930c47a78284ce885"
 dependencies = [
  "cast",
  "cervine",
@@ -258,21 +256,6 @@ name = "regex-syntax"
 version = "0.6.25"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f497285884f3fcff424ffc933e56d7cbca511def0c9831a7f9b5f6153e3cc89b"
-
-[[package]]
-name = "rustc_version"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bfa0f585226d2e68097d4f95d113b15b83a82e819ab25717ec0590d9584ef366"
-dependencies = [
- "semver",
-]
-
-[[package]]
-name = "semver"
-version = "1.0.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "568a8e6258aa33c13358f81fd834adb854c6f7c9468520910a9b1e8fac068012"
 
 [[package]]
 name = "smallvec"
