@@ -47,7 +47,7 @@ pub mod tests {
         let input = r#"Your lucky number is '[rand:1;100]."#;
         assert_eq!(
             _rant(input, 0).unwrap().to_string(),
-            "Your lucky number is 33."
+            "Your lucky number is '33."
         );
     }
 
@@ -56,7 +56,7 @@ pub mod tests {
         let input = r#"Your lucky number is `[rand:1;100]."#;
         assert_eq!(
             _rant(input, 0).unwrap().to_string(),
-            "Your lucky number is `33."
+            "Your lucky number is 33."
         );
     }
 }
