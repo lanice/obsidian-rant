@@ -1,3 +1,12 @@
+## [0.5.3](https://github.com/lanice/obsidian-rant/compare/0.5.2...0.5.3) (2022-01-15)
+
+
+### Features
+
+* Display Rant errors in output directly, disable require function (module loading does not work anyway) ([01c18a7](https://github.com/lanice/obsidian-rant/commit/01c18a75d9b2b8a9d8fc38ad6683e0df424ee902))
+
+
+
 ## [0.5.2](https://github.com/lanice/obsidian-rant/compare/0.5.1...0.5.2) (2022-01-12)
 
 
