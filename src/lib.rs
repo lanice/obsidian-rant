@@ -1,6 +1,6 @@
 use std::fmt;
 
-use rant::{compiler::CompilerErrorKind, runtime::RuntimeError, Rant, RantValue};
+use rant::{compiler::CompilerErrorKind, runtime::RuntimeError, Rant, RantOptions, RantValue};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -12,7 +12,12 @@ pub fn rant(input: &str, seed: u32) -> Result<String, JsValue> {
 }
 
 fn _rant(input: &str, seed: u32) -> Result<RantValue, RantError> {
-    let mut rant = Rant::with_seed(seed as u64);
+    let options = RantOptions {
+        seed: seed.into(),
+        enable_require: false,
+        ..Default::default()
+    };
+    let mut rant = Rant::with_options(options);
     let program = rant.compile_quiet(input).map_err(RantError::Compiler)?;
     rant.run(&program).map_err(RantError::Runtime)
 }
