@@ -87,7 +87,7 @@ You can use any form of links within a Rant code block, and it properly renders 
 
 ````markdown
 ```rant
-[rep:10][sep:-]{"[[A Page]]"|"[External link](https://www.wikipedia.org)"|Just text}
+[rep:10][sep:"-"]{"[[A Page]]"|"[External link](https://www.wikipedia.org)"|Just text}
 ```
 ````
 Result:
@@ -114,7 +114,7 @@ A Rant program can output lists like this:
 ````markdown
 ```rant
 A list of all kinds of stuff:\n
-[rep:5][sep:\n]{- "[[A page]]"|- Just text|- "`dice: 2d12`"}
+[rep:5][sep:\n]{"- [[A page]]"|"- Just text"|"- `dice: 2d12`"}
 ```
 ````
 Result:

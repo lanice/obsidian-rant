@@ -135,7 +135,7 @@ dependencies = [
 
 [[package]]
 name = "obsidian-rantlang-plugin"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "getrandom",
  "rant",
@@ -233,9 +233,9 @@ dependencies = [
 
 [[package]]
 name = "rant"
-version = "4.0.0-alpha.23"
+version = "4.0.0-alpha.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8c7458c8c7796082c292bf5414cc505be519c3a459f4d58930c47a78284ce885"
+checksum = "a006d90e4e1a5096263702dc49f60074071c9374a02f36e27734f62623fe9fa7"
 dependencies = [
  "cast",
  "cervine",
