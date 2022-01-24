@@ -1,3 +1,12 @@
+## [0.5.5](https://github.com-personal/lanice/obsidian-rant/compare/0.5.4...0.5.5) (2022-01-24)
+
+
+### build
+
+* Update rant to new version v4.0.0-alpha.25 ([e8ccfa0](https://github.com-personal/lanice/obsidian-rant/commit/e8ccfa060086c251e9f299def0b90a25f2aec383))
+
+
+
 ## [0.5.4](https://github.com/lanice/obsidian-rant/compare/0.5.3...0.5.4) (2022-01-18)
 
 
