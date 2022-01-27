@@ -46,7 +46,7 @@ A Rant program that produces a shuffled deck of cards, taken from the [official 
 ````markdown
 ```rant
 [shuffle: 
-  [rep: 2] {(Joker)} 
+  [rep: 2] {(:Joker)} 
   [cat: **(A;2;3;4;5;6;7;8;9;10;J;Q;K); **(♠;♥;♣;♦) |> collect]
 ]
 ```
