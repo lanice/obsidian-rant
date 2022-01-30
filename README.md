@@ -35,6 +35,8 @@ Within a `rant` block (both inline and code blocks), the result of the program i
 That means that you can add styling, links, or other markdown-processing elements inside a `rant` block, and they will be rendered accordingly.
 In order to avoid Rant syntax errors, you can wrap these elements in double quotes, because Rant treats everything inside double quotes as [string literals](https://docs.rant-lang.org/language/text.html#string-literals), and will not evaluate the content.
 
+For common markdown operations, the following global functions are added to the Rant context: `bold`, `italic`, `bold-italic`, `highlight`, `link`
+
 You can also embed the result of an existing rant codeblock into any other document or other rant block by using [block links](https://help.obsidian.md/How+to/Link+to+blocks), see [these examples](#embedding-rant-blocks) for details.
 
 ## Examples
@@ -70,11 +72,11 @@ Result:
 
 ### Styling
 
-This is an example of how to apply markdown styling within the Rant code block, note the usage of double quotes:
+This is an example of how to apply markdown styling using the global markdown functions:
 
 ````markdown
 ```rant
-"**"{Hello|Hi|Hey}"**" world!
+[bold: {Hello|Hi|Hey}] world!
 ```
 ````
 Result:
@@ -87,7 +89,7 @@ You can use any form of links within a Rant code block, and it properly renders 
 
 ````markdown
 ```rant
-[rep:10][sep:"-"]{"[[A Page]]"|"[External link](https://www.wikipedia.org)"|Just text}
+[rep:10][sep:"-"]{[link: A Page]|"[External link](https://www.wikipedia.org)"|Just text}
 ```
 ````
 Result:
