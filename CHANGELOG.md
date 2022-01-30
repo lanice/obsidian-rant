@@ -1,3 +1,17 @@
+## [0.5.8](https://github.com/lanice/obsidian-rant/compare/0.5.7...0.5.8) (2022-01-30)
+
+
+### build
+
+* Update rant to new version v4.0.0-alpha.28 ([84d154a](https://github.com/lanice/obsidian-rant/commit/84d154ad516ad5ea2ac10615c5151edf76d8b9ad))
+
+### feat
+
+* Add detailed rant compiler messages to console log in case of compiler errors ([92f866c](https://github.com/lanice/obsidian-rant/commit/92f866ce46d39e2316d086a167a45cd37678d1a4))
+* Provide global rant functions for common markdown stylings (bold, italic, bold-italic, highlight, link) ([9049b21](https://github.com/lanice/obsidian-rant/commit/9049b213cdb20e01d706f7f033f95546bd4037cb))
+
+
+
 ## [0.5.7](https://github.com/lanice/obsidian-rant/compare/0.5.6...0.5.7) (2022-01-27)
 
 
