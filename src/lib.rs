@@ -1,9 +1,9 @@
-use std::fmt;
+use std::{fmt, rc::Rc};
 
 use rant::{
     compiler::{CompilerErrorKind, CompilerMessage},
-    runtime::RuntimeError,
-    Rant, RantOptions, RantValue,
+    runtime::{RuntimeError, VM},
+    AsRantFunction, Rant, RantOptions, RantValue,
 };
 use wasm_bindgen::prelude::*;
 
@@ -22,12 +22,48 @@ fn _rant(input: &str, seed: u32) -> Result<RantValue, RantError> {
         ..Default::default()
     };
     let mut rant = Rant::with_options(options);
+    register_markdown_functions(&mut rant);
+
     let mut msgs: Vec<CompilerMessage> = vec![];
     let program = rant.compile(input, &mut msgs);
     match program {
         Ok(p) => rant.run(&p).map_err(RantError::Runtime),
         Err(err) => Err(RantError::Compiler(CompilerErrorWithMsgs { err, msgs })),
     }
+}
+
+fn register_markdown_functions(rant: &mut Rant) {
+    use RantValue::Function;
+    rant.set_global("italic", Function(Rc::new(italic.as_rant_func())));
+    rant.set_global("bold", Function(Rc::new(bold.as_rant_func())));
+    rant.set_global("bold-italic", Function(Rc::new(bold_italic.as_rant_func())));
+    rant.set_global("highlight", Function(Rc::new(highlight.as_rant_func())));
+    rant.set_global("link", Function(Rc::new(link.as_rant_func())));
+}
+
+fn italic(vm: &mut VM, val: RantValue) -> Result<(), RuntimeError> {
+    vm.cur_frame_mut().write(format!("*{}*", val));
+    Ok(())
+}
+
+fn bold(vm: &mut VM, val: RantValue) -> Result<(), RuntimeError> {
+    vm.cur_frame_mut().write(format!("**{}**", val));
+    Ok(())
+}
+
+fn bold_italic(vm: &mut VM, val: RantValue) -> Result<(), RuntimeError> {
+    vm.cur_frame_mut().write(format!("***{}***", val));
+    Ok(())
+}
+
+fn highlight(vm: &mut VM, val: RantValue) -> Result<(), RuntimeError> {
+    vm.cur_frame_mut().write(format!("=={}==", val));
+    Ok(())
+}
+
+fn link(vm: &mut VM, val: RantValue) -> Result<(), RuntimeError> {
+    vm.cur_frame_mut().write(format!("[[{}]]", val));
+    Ok(())
 }
 
 #[derive(Debug)]
