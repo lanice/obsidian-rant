@@ -165,9 +165,9 @@ dependencies = [
 
 [[package]]
 name = "quickscope"
-version = "0.1.6"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "56957ce87bc2e87b571220844dad33f458a295c3a134b524e900f2ab74858be6"
+checksum = "1d47bcfc3e13850589cf9338a02b6dfb5aebb3748a0f93a392e8df91d6193b6b"
 dependencies = [
  "indexmap",
  "smallvec",
@@ -233,9 +233,9 @@ dependencies = [
 
 [[package]]
 name = "rant"
-version = "4.0.0-alpha.27"
+version = "4.0.0-alpha.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7294c1ae73cbe169f3293ad101777b2aeb4e4418e0e5b8886848574328f02571"
+checksum = "2568d59a4f289f798d05ef15e34ad6212789bfcdabb19359460879fe20535053"
 dependencies = [
  "cast",
  "cervine",
