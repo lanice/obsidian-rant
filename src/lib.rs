@@ -1,6 +1,10 @@
 use std::fmt;
 
-use rant::{compiler::CompilerErrorKind, runtime::RuntimeError, Rant, RantOptions, RantValue};
+use rant::{
+    compiler::{CompilerErrorKind, CompilerMessage},
+    runtime::RuntimeError,
+    Rant, RantOptions, RantValue,
+};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -18,22 +22,48 @@ fn _rant(input: &str, seed: u32) -> Result<RantValue, RantError> {
         ..Default::default()
     };
     let mut rant = Rant::with_options(options);
-    let program = rant.compile_quiet(input).map_err(RantError::Compiler)?;
-    rant.run(&program).map_err(RantError::Runtime)
+    let mut msgs: Vec<CompilerMessage> = vec![];
+    let program = rant.compile(input, &mut msgs);
+    match program {
+        Ok(p) => rant.run(&p).map_err(RantError::Runtime),
+        Err(err) => Err(RantError::Compiler(CompilerErrorWithMsgs { err, msgs })),
+    }
 }
 
 #[derive(Debug)]
 enum RantError {
-    Compiler(CompilerErrorKind),
+    Compiler(CompilerErrorWithMsgs),
     Runtime(RuntimeError),
 }
 
 impl fmt::Display for RantError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            RantError::Compiler(ref err) => write!(f, "Rant Compile error: {}", err),
+            RantError::Compiler(ref err) => write!(f, "{}", err),
             RantError::Runtime(ref err) => write!(f, "Rant Runtime error: {}", err),
         }
+    }
+}
+
+#[derive(Debug)]
+struct CompilerErrorWithMsgs {
+    err: CompilerErrorKind,
+    msgs: Vec<CompilerMessage>,
+}
+
+impl fmt::Display for CompilerErrorWithMsgs {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let msgs = self
+            .msgs
+            .iter()
+            .map(|msg| format!("{:#?}", msg))
+            .collect::<Vec<_>>()
+            .join("\n");
+        write!(
+            f,
+            "Rant Compiler error: {}\nCompiler messages:\n{}",
+            self.err, msgs
+        )
     }
 }
 

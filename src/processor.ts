@@ -26,7 +26,7 @@ export abstract class BaseRantProcessor extends MarkdownRenderChild {
     try {
       this.result = rant(input, seed);
     } catch (error) {
-      this.result = error;
+      this.result = error.split("\n")[0] + " (see console for details)";
       console.error(error);
     }
   }
