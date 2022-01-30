@@ -72,11 +72,11 @@ Result:
 
 ### Styling
 
-This is an example of how to apply markdown styling using the global markdown functions:
+This is an example of how to apply markdown styling using the global markdown functions (the single backtick before the `bold` function serves as [hint](https://docs.rant-lang.org/language/text.html#hinting)):
 
 ````markdown
 ```rant
-[bold: {Hello|Hi|Hey}] world!
+`[bold: {Hello|Hi|Hey}] world!
 ```
 ````
 Result:
