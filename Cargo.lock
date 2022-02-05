@@ -233,9 +233,9 @@ dependencies = [
 
 [[package]]
 name = "rant"
-version = "4.0.0-alpha.28"
+version = "4.0.0-alpha.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2568d59a4f289f798d05ef15e34ad6212789bfcdabb19359460879fe20535053"
+checksum = "a373a9156a41974809f84059ed5d64a00d608f882a9aa3e5453b9d21c1e7eb4a"
 dependencies = [
  "cast",
  "cervine",

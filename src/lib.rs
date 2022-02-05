@@ -1,9 +1,9 @@
 use std::{fmt, rc::Rc};
 
 use rant::{
-    compiler::{CompilerErrorKind, CompilerMessage},
+    compiler::{CompilerError, CompilerMessage},
     runtime::{RuntimeError, VM},
-    AsRantFunction, Rant, RantOptions, RantValue,
+    AsRantFunction, NoModuleResolver, Rant, RantOptions, RantValue,
 };
 use wasm_bindgen::prelude::*;
 
@@ -18,10 +18,9 @@ pub fn rant(input: &str, seed: u32) -> Result<String, JsValue> {
 fn _rant(input: &str, seed: u32) -> Result<RantValue, RantError> {
     let options = RantOptions {
         seed: seed.into(),
-        enable_require: false,
         ..Default::default()
     };
-    let mut rant = Rant::with_options(options);
+    let mut rant = Rant::with_options(options).using_module_resolver(NoModuleResolver);
     register_markdown_functions(&mut rant);
 
     let mut msgs: Vec<CompilerMessage> = vec![];
@@ -83,7 +82,7 @@ impl fmt::Display for RantError {
 
 #[derive(Debug)]
 struct CompilerErrorWithMsgs {
-    err: CompilerErrorKind,
+    err: CompilerError,
     msgs: Vec<CompilerMessage>,
 }
 
