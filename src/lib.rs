@@ -3,7 +3,7 @@ use std::{fmt, rc::Rc};
 use rant::{
     compiler::{CompilerError, CompilerMessage},
     runtime::{RuntimeError, VM},
-    AsRantFunction, NoModuleResolver, Rant, RantOptions, RantValue,
+    IntoRantFunction, NoModuleResolver, Rant, RantOptions, RantValue,
 };
 use wasm_bindgen::prelude::*;
 
@@ -33,11 +33,14 @@ fn _rant(input: &str, seed: u32) -> Result<RantValue, RantError> {
 
 fn register_markdown_functions(rant: &mut Rant) {
     use RantValue::Function;
-    rant.set_global("italic", Function(Rc::new(italic.as_rant_func())));
-    rant.set_global("bold", Function(Rc::new(bold.as_rant_func())));
-    rant.set_global("bold-italic", Function(Rc::new(bold_italic.as_rant_func())));
-    rant.set_global("highlight", Function(Rc::new(highlight.as_rant_func())));
-    rant.set_global("link", Function(Rc::new(link.as_rant_func())));
+    rant.set_global("italic", Function(Rc::new(italic.into_rant_func())));
+    rant.set_global("bold", Function(Rc::new(bold.into_rant_func())));
+    rant.set_global(
+        "bold-italic",
+        Function(Rc::new(bold_italic.into_rant_func())),
+    );
+    rant.set_global("highlight", Function(Rc::new(highlight.into_rant_func())));
+    rant.set_global("link", Function(Rc::new(link.into_rant_func())));
 }
 
 fn italic(vm: &mut VM, val: RantValue) -> Result<(), RuntimeError> {
